@@ -13,9 +13,11 @@ module.exports = {
         type: Sequelize.STRING
       },
       description: {
+        allowNull: true,
         type: Sequelize.STRING
       },
       deletedAt: {
+        allowNull: true,
         type: Sequelize.DATE
       },
       createdAt: {
