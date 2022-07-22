@@ -10,6 +10,16 @@ const getCategories = async (req,res) => {
     }
 }
 
+const getCategory = async (req,res) => {
+    try {
+        const {id} = req.params;
+        const category = await CategoryService.findByPk(id);
+        res.json(category);
+    } catch (error) {
+        res.status(CLIENT_ERROR).json(error);
+    }
+}
+
 const createCategory = async (req,res) => {
     try {
         //TODO:implementar el repositorio
@@ -44,5 +54,7 @@ module.exports= {
     createCategory,
     modifyCategory,
     deleteCategory,
+    getCategory,
+    
 
 }
