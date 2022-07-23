@@ -8,7 +8,8 @@ require('dotenv').config()
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const membersRouter = require('./routes/members');
+const membersRouter = require('./routes/member');
+const organizationsRouter = require('./routes/organizations');
 
 const app = express();
 app.use(cors())
@@ -25,7 +26,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/api/members',membersRouter)
+app.use('/members',membersRouter)
+app.use('/organizations/',organizationsRouter)
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
