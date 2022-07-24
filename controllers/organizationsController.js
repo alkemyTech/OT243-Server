@@ -8,17 +8,11 @@ const getAllOrganizations = (req, res) => {
   });
 };
 //GET ONE
-const getOrganizations = async (req, res) => {
-  try {
-    const id = req.params.id;
-    const organization = await OrganizationService.FindbyPk(id);
-    res.status(httpStatus.OK).send({
-      organization,
+const  getOrganizations = (req,res)=>{
+  res.status(200).json({
+      message: 'GetOne Orgnaizations !',
     });
-  } catch (error) {
-    res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error);
-  }
-};
+}
 // POST
 const createOrganizations = (req, res) => {
   res.status(201).json({
@@ -27,10 +21,20 @@ const createOrganizations = (req, res) => {
 };
 
 // UPDATE
-const updateOrganizations = (req, res) => {
-  res.status(200).json({
-    message: "Update Organizations!",
-  });
+const updateOrganizations = async (req, res) => {
+  const id= req.params.id
+  const dataUpdate= {...req.body}
+
+  try{
+
+    
+     const organizationUpdate= await OrganizationService.upDateData(dataUpdate,id)
+     res.status(httpStatus.OK).send({
+      organizationUpdate
+     });
+  }catch(error){
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error);
+  }
 };
 
 // DELETE
