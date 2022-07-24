@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       News.belongsTo(models.Category, {
         foreignKey: 'id',
-        targetKey: 'categoryId',
+      //  targetKey: 'categoryId',
       });
     }
   }
