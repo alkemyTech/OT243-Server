@@ -3,10 +3,6 @@ const UserService = require("../services/user");
 const { validationResult } = require('express-validator');
 const bcryptjs = require('bcryptjs');
 
-// BORRAR
-const { User } = require('../models/index');
-// BORRAR
-
 // Login User Controller
 const loginUser = async (req, res) => {
   // Validate with Express-Validator
@@ -16,7 +12,6 @@ const loginUser = async (req, res) => {
     console.log(errors);
   } else {
     const { email, password } = req.body;
-    //const data = { email, password };
 
     try {
       // Check if email exist en DB and get user values 
@@ -27,7 +22,7 @@ const loginUser = async (req, res) => {
 
       if (validPassword) {
         res.status(OK).json({
-          msg: 'Login',
+          msg: 'Login Ok',
           data: {
             user,
           },
