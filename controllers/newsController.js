@@ -18,10 +18,20 @@ const getAllNews = async (req, res) => {
 
 // GET ONE
 const getNews = async (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    message: 'This route is not yet defined!',
-  });
+  try {
+    const news = await NewsService.getOne(req.params);
+    res.status(OK).json({
+      status: 'success',
+      data: {
+        news,
+      },
+    });
+  } catch (err) {
+    res.status(SERVER_ERROR).json({
+      status: 'error',
+      message: err,
+    });
+  }
 };
 
 // POST
