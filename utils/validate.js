@@ -1,16 +1,16 @@
-const { validationResult}=require('express-validator');
-const httpStatus = require('./httpStatus')
 
+const { validationResult } = require('express-validator');
 
-const validateResult = (req,res,next)=>{
-    try {
-        validationResult(req).throw()
-        return next()
-    } catch (error) {
-        res.status(httpStatus.FORBIDDEN)
-        res.send({errors:error.array()})
-        
-    }
-}
+const validateResult = (req, res, next) => {
+  try {
+    validationResult(req).throw();
+    return next();
+  } catch (err) {
+    res.status(403).json({
+      status: 'error',
+      message: { errors: err.array() },
+    });
+  }
+};
 
-module.exports={validateResult}
+module.exports = { validateResult };
