@@ -11,7 +11,7 @@ const getAllOrganizations = (req, res) => {
 const getOrganizations = async (req, res) => {
   try {
     const id = req.params.id;
-    const organization = await OrganizationService.FindbyPk(id);
+    const organization = await OrganizationService.getOneOrganization(id);
     res.status(httpStatus.OK).send({
       organization,
     });

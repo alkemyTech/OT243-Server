@@ -2,7 +2,7 @@
 const OrganizationModel =require('../models').Organization
 
 class OrganizationService{
-    static async FindbyPk(id){ 
+    static async getOneOrganization(id){ 
         
         const data= await OrganizationModel.findOne({
             where: { id },
