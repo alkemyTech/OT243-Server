@@ -8,11 +8,17 @@ const getAllOrganizations = (req, res) => {
   });
 };
 //GET ONE
-const  getOrganizations = (req,res)=>{
-  res.status(200).json({
-      message: 'GetOne Orgnaizations !',
+const getOrganizations = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const organization = await OrganizationService.getOneOrganization(id);
+    res.status(httpStatus.OK).send({
+      organization,
     });
-}
+  } catch (error) {
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).send(error);
+  }
+};
 // POST
 const createOrganizations = (req, res) => {
   res.status(201).json({
