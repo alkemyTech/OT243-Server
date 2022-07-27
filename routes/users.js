@@ -2,7 +2,11 @@ var express = require('express');
 const { body } = require('express-validator');
 var router = express.Router();
 
-const { createUser } = require('../controllers/userController');
+const { createUser, loginUser } = require('../controllers/userController');
+const { validateUserLogin } = require('../validators/usersValidator');
+
+/* POST Login User - URL: ../users/auth/login */
+router.post('/auth/login', validateUserLogin, loginUser);
 
 const validateUser = [ // Constraints must to be defined
   // Validate name

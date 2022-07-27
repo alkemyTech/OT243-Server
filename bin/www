@@ -89,14 +89,18 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
-const { sequelize } = require('../models/index');
+/**
+ *  Conect ro DB
+ */
 
-(async function dbConnect() {
-  try {
-    await sequelize.sync({ force: false });
-  console.log('Status: DB Connection successful...');
-  } catch (error) {
-    console.log('DB error conection');
-    console.log(error);
-  }
-})();
+ const { sequelize } = require('../models/index');
+
+ (async function dbConnect() {
+   try {
+     await sequelize.sync({ force: false });
+   console.log('Status: DB Connection successful...');
+   } catch (error) {
+     console.log('DB error conection');
+     console.log(error);
+   }
+ })();
