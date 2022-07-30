@@ -14,11 +14,15 @@ const createUser = async (req, res) => {
 
   try {
     // Create User in Data Base
-    const user = await UserService.create(data);
+    const {id, firstName, lastName, email} = await UserService.create(data);
+    console.log();
     res.status(OK).json({
       msg: 'User created',
       data: {
-        user,
+        id,
+        firstName,
+        lastName,
+        email
       },
     });
   } catch (error) {
