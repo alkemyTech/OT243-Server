@@ -8,11 +8,10 @@ class UserService {
         return await User.findOne({ where: { email } });
     }
     static async userExist(id) {
-        const user = await User.findOne({ where: { id } });
-        return user || false
+        return await User.findOne({ where: { id } });
     }
     static async userUpdate(id, data) {
-        return await User.update(data, { where: id })
+        return await User.update(data, { where: { id } });
     }
 }
 

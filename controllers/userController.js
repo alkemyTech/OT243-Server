@@ -1,6 +1,6 @@
 const { OK, INTERNAL_SERVER_ERROR, FORBIDDEN, RESOURCE_NOT_FOUND } = require('../utils/httpCodes');
 const UserService = require("../services/user");
-const bcryptjs = require('bcryptjs');
+const { encriptPass, validPass } = require('../utils/encriptPass');
 
 // Create User Controller
 const createUser = async (req, res) => {
@@ -8,9 +8,7 @@ const createUser = async (req, res) => {
   const data = { firstName, lastName, email, password };
   
   // Encrypt password with bcryptjs
-  const salt = bcryptjs.genSaltSync();
-  data.password = bcryptjs.hashSync(data.password, salt);
-
+  data.password = encriptPass(data.password);
   try {
     // Create User in Data Base
     const user = await UserService.create(data);
@@ -43,7 +41,7 @@ const loginUser = async (req, res) => {
       });
     } else {
       // Check password with bcryptjs
-      const validPassword = bcryptjs.compareSync(password, user.password);
+      const validPassword = validPass(password, user.password);
       if (validPassword) {
         res.status(OK).json({
           msg: 'Login Ok',
@@ -67,13 +65,19 @@ const loginUser = async (req, res) => {
   }
 }
 
-const updateUser = (req, res) => {
+const updateUser = async (req, res) => {
   const { id } = req.params
-  const { data } = req.body
-  const existe = UserService.userExist(id)
-  if (!existe) return res.status(RESOURCE_NOT_FOUND)
-  UserService.updateUser(id, data)
-  return res.status(OK).json({ message: 'Datos de usuario actulizados', data, id })
+  const { password, firstName, lastName, email } = req.body
+  try {
+    const existe = await UserService.userExist(id);
+    if (!existe) return res.status(RESOURCE_NOT_FOUND).json({ "message": "User not found!!" });
+    const newPass = encriptPass(password);
+    await UserService.userUpdate(id, { firstName, lastName, email, password: newPass });
+    return res.status(OK).json({ message: 'Datos de usuario actulizados'});
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({message: 'Internal Error'});    
+  }
 }
 
 module.exports = { createUser, loginUser, updateUser };
