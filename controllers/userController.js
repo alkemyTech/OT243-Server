@@ -67,4 +67,13 @@ const loginUser = async (req, res) => {
   }
 }
 
-module.exports = { createUser, loginUser };
+const updateUser = (req, res) => {
+  const { id } = req.params
+  const { data } = req.body
+  const existe = UserService.userExist(id)
+  if (!existe) return res.status(RESOURCE_NOT_FOUND)
+  UserService.updateUser(id, data)
+  return res.status(OK).json({ message: 'Datos de usuario actulizados', data, id })
+}
+
+module.exports = { createUser, loginUser, updateUser };
