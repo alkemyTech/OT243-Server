@@ -1,27 +1,31 @@
 const httpStatus = require('../utils/httpStatus')
 const UserRole = require('../utils/roles')
 
+
 class CheckRole {
 
     static  isAdmin( req, res, next) {
 
-        //GODO  check con tokken generado!! 
-        const user = req.user 
+        //check con token generado!! 
         
-        
+        let token = req.headers['authorization'];
 
-        if(!user){
-            res
-                .status(httpStatus.BAD_REQUEST)
-                .json({
-                    msg:`Access denied , token incorrect/expire`
-                })
-        }else{
-            if ( user.role.id !== UserRole.ADMIN){
+        if (!token) {
+        res
+        .status(httpStatus.BAD_REQUEST)
+        .json({
+            msg:`Access denied , token not found/expire`
+        })
+        }
+        else{
+
+        const user = jwt.verify(token,  process.env.JWT_SECRET_PRIVATE_KEY)
+    
+            if ( user.roleId !== UserRole.ADMIN){
                 res
                     .status(httpStatus.UNAUTHORIZED)
                     .json({
-                        msg:'Access denied , you dont hav auth'
+                        msg:'Access denied , you dont have auth'
                     });
             }else{
                 next()
@@ -30,8 +34,8 @@ class CheckRole {
 
     }
 
-}
 
+}
 
 
 module.exports =CheckRole
