@@ -1,5 +1,6 @@
 const { OK, CLIENT_ERROR, INTERNAL_SERVER_ERROR, FORBIDDEN, RESOURCE_NOT_FOUND } = require('../utils/httpCodes');
 const UserService = require("../services/user");
+const WelcomeMailService = require('../services/welcomEmail')
 const { validationResult } = require('express-validator');
 const bcryptjs = require('bcryptjs');
 
@@ -22,12 +23,16 @@ const createUser = async (req, res) => {
     try {
       // Create User in Data Base
       const user = await UserService.create(data);
+      const welcomeEmailSend= await WelcomeMailService.welcomeMail(user)
       res.status(OK).json({
         msg: 'User created',
         data: {
           user,
+          welcomeEmailSend
         },
       });
+
+
     } catch (error) {
       res.status(INTERNAL_SERVER_ERROR).json({
         msg: 'Error',
