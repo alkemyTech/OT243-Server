@@ -1,4 +1,4 @@
-const { OK, INTERNAL_SERVER_ERROR, FORBIDDEN, RESOURCE_NOT_FOUND } = require('../utils/httpCodes');
+const { OK, INTERNAL_SERVER_ERROR, FORBIDDEN, RESOURCE_NOT_FOUND, CLIENT_ERROR } = require('../utils/httpCodes');
 const UserService = require("../services/user");
 const bcryptjs = require('bcryptjs');
 const { generateJWT } = require('../utils/jasonWebToken');
@@ -14,7 +14,7 @@ const createUser = async (req, res) => {
 
   try {
     // Create User in Data Base
-    const {id, firstName, lastName, email} = await UserService.create(data);
+    const { id, firstName, lastName, email } = await UserService.create(data);
     console.log();
     res.status(OK).json({
       msg: 'User created',
@@ -49,7 +49,7 @@ const loginUser = async (req, res) => {
     } else {
       // Check password with bcryptjs
       const validPassword = bcryptjs.compareSync(password, user.password);
-      
+
       // Send only name, last name, and email as a token's payload 
       if (validPassword) {
         const payloadToken = {
@@ -77,6 +77,33 @@ const loginUser = async (req, res) => {
       message: error,
     });
   }
-}
+};
 
-module.exports = { createUser, loginUser };
+// Delete User Controller
+const deleteUser = async (req, res) => {
+  try {
+    const userDeleted = await UserService.userDelete(req.params.id);
+
+    if (userDeleted) {
+      res.status(OK).json({
+        msg: 'The user was delted'
+      });
+    } else if (!userDeleted) {
+      res.status(CLIENT_ERROR).json({
+        msg: 'Invalid ID'
+      });
+    }
+
+  } catch (error) {
+    res.status(INTERNAL_SERVER_ERROR).json({
+      msg: 'Delete error',
+      message: error,
+    });
+  }
+};
+
+module.exports = {
+  createUser,
+  loginUser,
+  deleteUser
+};
