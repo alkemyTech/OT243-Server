@@ -8,7 +8,7 @@ const validateUserToken = (req, res, next) => {
         const payload = jwt.verify(token,"clave de prueba");
         next();
     } catch (error) {
-        return res.status(FORBIDDEN).json({ code: FORBIDDEN });
+        return res.status(FORBIDDEN).json({ code: FORBIDDEN, msg: error.message });
     }
 }
 
