@@ -1,44 +1,42 @@
-const { OK, CLIENT_ERROR, INTERNAL_SERVER_ERROR, FORBIDDEN, RESOURCE_NOT_FOUND } = require('../utils/httpCodes');
+const { OK, INTERNAL_SERVER_ERROR, FORBIDDEN, RESOURCE_NOT_FOUND, CLIENT_ERROR } = require('../utils/httpCodes');
 const UserService = require("../services/user");
+
 const WelcomeMailService = require('../services/welcomEmail')
-const { validationResult } = require('express-validator');
+
+
 const bcryptjs = require('bcryptjs');
+const { generateJWT } = require('../utils/jasonWebToken');
 
 // Create User Controller
 const createUser = async (req, res) => {
+  const { firstName, lastName, email, password } = req.body;
+  const data = { firstName, lastName, email, password };
 
-  // Validate with Express-Validator
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    res.status(CLIENT_ERROR).json({ errors: errors.array() });
-    console.log(errors);
-  } else {
-    const { firstName, lastName, email, password } = req.body;
-    const data = { firstName, lastName, email, password };
-    
-    // Encrypt password with bcryptjs
-    const salt = bcryptjs.genSaltSync();
-    data.password = bcryptjs.hashSync(data.password, salt);
-
-    try {
-      // Create User in Data Base
-      const user = await UserService.create(data);
-      const welcomeEmailSend= await WelcomeMailService.welcomeMail(user)
-      res.status(OK).json({
-        msg: 'User created',
-        data: {
-          user,
-          welcomeEmailSend
-        },
-      });
+  // Encrypt password with bcryptjs
+  const salt = bcryptjs.genSaltSync();
+  data.password = bcryptjs.hashSync(data.password, salt);
 
 
-    } catch (error) {
-      res.status(INTERNAL_SERVER_ERROR).json({
-        msg: 'Error',
-        message: error,
-      });
-    }
+  try {
+    // Create User in Data Base
+    const { id, firstName, lastName, email } = await UserService.create(data);
+    console.log();
+    res.status(OK).json({
+      msg: 'User created',
+      data: {
+        id,
+        firstName,
+        lastName,
+        email,
+        welcomeEmailSend
+      },
+    });
+  } catch (error) {
+    res.status(INTERNAL_SERVER_ERROR).json({
+      msg: 'Error',
+      message: error,
+    });
+
   }
 };
 
@@ -58,12 +56,20 @@ const loginUser = async (req, res) => {
     } else {
       // Check password with bcryptjs
       const validPassword = bcryptjs.compareSync(password, user.password);
+
+      // Send only name, last name, and email as a token's payload 
       if (validPassword) {
+        const payloadToken = {
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email
+        };
+        const token = await generateJWT(payloadToken);
+
         res.status(OK).json({
           msg: 'Login Ok',
-          data: {
-            user,
-          },
+          token
         });
       } else {
         res.status(FORBIDDEN).json({
@@ -72,13 +78,39 @@ const loginUser = async (req, res) => {
         });
       }
     }
-    
   } catch (error) {
     res.status(INTERNAL_SERVER_ERROR).json({
       msg: 'Login error',
       message: error,
     });
   }
-}
+};
 
-module.exports = { createUser, loginUser };
+// Delete User Controller
+const deleteUser = async (req, res) => {
+  try {
+    const userDeleted = await UserService.userDelete(req.params.id);
+
+    if (userDeleted) {
+      res.status(OK).json({
+        msg: 'The user was delted'
+      });
+    } else if (!userDeleted) {
+      res.status(CLIENT_ERROR).json({
+        msg: 'Invalid ID'
+      });
+    }
+
+  } catch (error) {
+    res.status(INTERNAL_SERVER_ERROR).json({
+      msg: 'Delete error',
+      message: error,
+    });
+  }
+};
+
+module.exports = {
+  createUser,
+  loginUser,
+  deleteUser
+};
