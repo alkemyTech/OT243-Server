@@ -5,7 +5,7 @@ const {
   DELETED,
   FORBIDDEN,
   UNAUTHORIZED,
-  SERVER_ERROR,
+  INTERNAL_SERVER_ERROR,
 } = require('../utils/httpCodes');
 
 // GET ALL
@@ -27,7 +27,7 @@ const getNews = async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(SERVER_ERROR).json({
+    res.status(INTERNAL_SERVER_ERROR).json({
       status: 'error',
       message: err,
     });
@@ -46,7 +46,7 @@ const createNews = async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(SERVER_ERROR).json({
+    res.status(INTERNAL_SERVER_ERROR).json({
       status: 'error',
       message: err,
     });
@@ -54,11 +54,22 @@ const createNews = async (req, res) => {
 };
 
 // UPDATE
-const updateNews = (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    message: 'This route is not yet defined!',
-  });
+const updateNews = async (req, res) => {
+  try {
+    const newsUpdated = await NewsService.update(req.params, req.body);
+
+    res.status(CREATED).json({
+      status: 'success',
+      data: {
+        news: newsUpdated,
+      },
+    });
+  } catch (err) {
+    res.status(INTERNAL_SERVER_ERROR).json({
+      status: 'error',
+      message: err.message,
+    });
+  }
 };
 
 // DELETE

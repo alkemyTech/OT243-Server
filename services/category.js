@@ -1,12 +1,15 @@
-
+const { Category } = require("../models");
 
 class CategoryService{
     //TODO:implementar con el modelo adecuado
     static async findAll(){
-        return ["cat1","cat2"]
+        return await Category.findAll({ attributes: ["name"] });
     }
     static async findByPk(id){
-        return {name:"cat1"}
+        return await Category.findByPk(id)
+    }
+    static async updateCategory(id, content){
+        return await Category.update({ ...content }, { where: { id } })
     }
 }
 
