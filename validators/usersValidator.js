@@ -1,7 +1,26 @@
 const { body } = require('express-validator');
-const { validationResult } = require('express-validator');
-const { CLIENT_ERROR } = require('../utils/httpCodes');
+const { validateResult, errorHandlerLogin } = require("../utils/validate");
 
+module.exports = {
+  validateUserPost: [ // Constraints must to be defined
+  // Validate name
+      body('firstName', 'Ingrese un nombre válido')
+        .exists()
+        .isLength({ min: 2 }),
+      // Validate Suername
+      body('lastName', 'Ingrese un apellido válido')
+        .exists()
+        .isLength({ min: 2 }),
+      // Validate Email
+      body('email', 'Ingrese un email válido')
+        .exists()
+        .isEmail(),
+      // Validate Password Length
+      body('password', 'La contraseña debe tener mas de 5 caracteres')
+        .isLength({ min: 5 }),
+      validateResult
+    ],
+}
 const errorHandler = (req, res, next) => {
     const error = validationResult(req);
     if (!error.isEmpty()) {
@@ -13,9 +32,9 @@ const errorHandler = (req, res, next) => {
 }
 
 const validateUserRegister = [ // Constraints must to be defined
-    // Validate Name
+// Validate Name
     body('firstName', 'Ingrese un nombre válido')
-        .exists()
+    .exists()
         .isLength({ min: 2 }),
     // Validate Suername
     body('lastName', 'Ingrese un apellido válido')
@@ -23,24 +42,24 @@ const validateUserRegister = [ // Constraints must to be defined
         .isLength({ min: 2 }),
     // Validate Email
     body('email', 'Ingrese un email válido')
-        .exists()
+    .exists()
         .isEmail(),
     // Validate Password Length
     body('password', 'La contraseña debe tener mas de 5 caracteres')
         .isLength({ min: 5 }),
     errorHandler
-];
-
-const validateUserLogin = [
+  ];
+  
+  const validateUserLogin = [
     // Validate Email
     body('email', 'Invalid email')
-        .exists()
-        .isEmail(),
+    .exists()
+    .isEmail(),
     // Validate Password
     body('password', 'Invalid Password')
-        .isLength({ min: 5 }),
+    .isLength({ min: 5 }),
     errorHandler
-];
+  ];
 
 module.exports = {
     validateUserRegister,

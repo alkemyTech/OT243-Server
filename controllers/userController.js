@@ -6,6 +6,7 @@ const WelcomeMailService = require('../services/welcomEmail')
 
 const bcryptjs = require('bcryptjs');
 const { generateJWT } = require('../utils/jasonWebToken');
+const encriptPass = require('../utils/encriptPass');
 
 // Create User Controller
 const createUser = async (req, res) => {
@@ -36,7 +37,6 @@ const createUser = async (req, res) => {
       msg: 'Error',
       message: error,
     });
-
   }
 };
 
@@ -109,8 +109,19 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = {
-  createUser,
-  loginUser,
-  deleteUser
-};
+const updateUser = async (req, res) => {
+  const { id } = req.params
+  const { password, firstName, lastName, email } = req.body
+  try {
+    const existe = await UserService.userExist(id);
+    if (!existe) return res.status(RESOURCE_NOT_FOUND).json({ "message": "User not found!!" });
+    const newPass = encriptPass(password);
+    await UserService.userUpdate(id, { firstName, lastName, email, password: newPass });
+    return res.status(OK).json({ message: 'Datos de usuario actulizados'});
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({message: 'Internal Error'});    
+  }
+}
+
+module.exports = { createUser, loginUser, updateUser, deleteUser };
