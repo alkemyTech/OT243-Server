@@ -1,4 +1,5 @@
-const { body } = require('express-validator');
+const { body, check } = require('express-validator');
+const { ownership } = require('../middlewares/Ownership');
 const { validateResult, errorHandlerLogin } = require("../utils/validate");
 
 module.exports = {
@@ -60,8 +61,15 @@ const validateUserRegister = [ // Constraints must to be defined
     .isLength({ min: 5 }),
     errorHandler
   ];
+  
+  const validateUserUpdate = [
+    check('id', 'id required').notEmpty(),
+    ownership,
+    errorHandler
+  ];
 
 module.exports = {
     validateUserRegister,
-    validateUserLogin
+    validateUserLogin,
+    validateUserUpdate
 };
