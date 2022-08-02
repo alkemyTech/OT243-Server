@@ -10,6 +10,15 @@ class UserService {
     static async getUser(id) {
         return await User.findByPk(id);
     }
+    static async userExist(id) {
+        return await User.findOne({ where: { id } });
+    }
+    static async userUpdate(id, data) {
+        return await User.update(data, { where: { id } });
+    }
+    static async userDelete(id) {
+        return await User.destroy({ where: { id } });
+    }
 }
 
 module.exports = UserService;

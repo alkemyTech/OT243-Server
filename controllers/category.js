@@ -20,7 +20,7 @@ const getCategory = async (req,res) => {
     }
 }
 
-const createCategory = async (req,res) => {
+const createCategory = async (req, res) => {
     try {
         //TODO:implementar el repositorio
         res.status(CREATED).json({msg:"category created"})
@@ -29,17 +29,17 @@ const createCategory = async (req,res) => {
     }
 }
 
-const modifyCategory = async (req,res) => {
+const modifyCategory = async (req, res) => {
     try {
         const {id} = req.params;
-        //TODO:implementar el repositorio
+        const modifiedCategory = await CategoryService.updateCategory(id,req.body)
         res.json({msg:"category modified"})
     } catch (error) {
         res.status(CLIENT_ERROR).json(error);
     }
 }
 
-const deleteCategory = async (req,res) => {
+const deleteCategory = async (req, res) => {
     try {
         const {id} = req.params
          //TODO:implementar el repositorio
@@ -48,6 +48,7 @@ const deleteCategory = async (req,res) => {
         res.status(CLIENT_ERROR).json(error);
     }
 }
+
 
 module.exports= {
     getCategories,
