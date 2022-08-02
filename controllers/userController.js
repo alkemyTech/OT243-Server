@@ -1,5 +1,9 @@
 const { OK, INTERNAL_SERVER_ERROR, FORBIDDEN, RESOURCE_NOT_FOUND, CLIENT_ERROR } = require('../utils/httpCodes');
 const UserService = require("../services/user");
+
+const WelcomeMailService = require('../services/welcomEmail')
+
+
 const bcryptjs = require('bcryptjs');
 const { generateJWT } = require('../utils/jasonWebToken');
 
@@ -12,6 +16,7 @@ const createUser = async (req, res) => {
   const salt = bcryptjs.genSaltSync();
   data.password = bcryptjs.hashSync(data.password, salt);
 
+
   try {
     // Create User in Data Base
     const { id, firstName, lastName, email } = await UserService.create(data);
@@ -22,7 +27,8 @@ const createUser = async (req, res) => {
         id,
         firstName,
         lastName,
-        email
+        email,
+        welcomeEmailSend
       },
     });
   } catch (error) {
@@ -30,6 +36,7 @@ const createUser = async (req, res) => {
       msg: 'Error',
       message: error,
     });
+
   }
 };
 
