@@ -31,9 +31,8 @@ app.use('/users', usersRouter);
 
 
 app.use('/categories',categoriesRouter);
-app.use('/members',membersRouter)
-app.use('/organizations/',organizationsRouter)
-app.use('/api/members', membersRouter);
+app.use('/members',membersRouter);
+app.use('/organizations/',organizationsRouter);
 app.use('/news', newsRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
