@@ -21,7 +21,8 @@ const createUser = async (req, res) => {
   try {
     // Create User in Data Base
     const { id, firstName, lastName, email } = await UserService.create(data);
-    console.log();
+    const user ={ firstName , lastName,email}
+    const welcomeEmailSend = await WelcomeMailService.welcomeMail(user)
     res.status(OK).json({
       msg: 'User created',
       data: {
