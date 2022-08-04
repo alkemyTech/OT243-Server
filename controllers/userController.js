@@ -6,7 +6,7 @@ const WelcomeMailService = require('../services/welcomEmail')
 
 const bcryptjs = require('bcryptjs');
 const { generateJWT } = require('../utils/jasonWebToken');
-const encriptPass = require('../utils/encriptPass');
+const { encriptPass } = require('../utils/encriptPass');
 
 // Create User Controller
 const createUser = async (req, res) => {
