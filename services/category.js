@@ -1,7 +1,6 @@
 const { Category } = require("../models");
 
 class CategoryService{
-    //TODO:implementar con el modelo adecuado
     static async findAll(){
         return await Category.findAll({ attributes: ["name"] });
     }
@@ -10,6 +9,12 @@ class CategoryService{
     }
     static async updateCategory(id, content){
         return await Category.update({ ...content }, { where: { id } })
+    }
+    static async createCategory(name){
+        return await Category.create({ name })
+    }
+    static async deleteCategory(id){
+        return await Category.destroy({ where: { id } })
     }
 }
 
