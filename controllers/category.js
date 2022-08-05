@@ -3,7 +3,8 @@ const CategoryService = require("../services/category.js");
 
 const getCategories = async (req,res) => {
     try {
-        const categories = await CategoryService.findAll();
+        const { page } = req.query;
+        const categories = await CategoryService.findAll(page);
         res.json(categories);
     } catch (error) {
         res.status(CLIENT_ERROR).json(error);
