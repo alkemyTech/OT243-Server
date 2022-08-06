@@ -18,16 +18,15 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'newsId'
       });
     }
-    }
+  }
   Comment.init({
-    user_id: DataTypes.INTEGER,
+    userId: DataTypes.INTEGER,
     body: DataTypes.TEXT,
-    post_id: DataTypes.INTEGER,
-    deleteAt: DataTypes.DATE
+    newsId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Comment',
-    paranoid:true
+    paranoid: true
   });
   return Comment;
 };

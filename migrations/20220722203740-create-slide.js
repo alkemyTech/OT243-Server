@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('organizations', {
+    await queryInterface.createTable('Slides', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -10,19 +10,19 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       imageUrl: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: false,  
       },
       text: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: false,  
       },
       order: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       organizationId: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       deleteAt: {
@@ -40,7 +40,7 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('slides');
+    await queryInterface.dropTable('Slides');
 
   }
 };
