@@ -21,6 +21,13 @@ const validateSlideGet = [ // Constraints must to be defined
     errorHandler
   ];
 
+  const validateSlideGetList = [ // Constraints must to be defined
+// Validate Name
+    validateJWT,
+    errorHandler
+  ];
+
 module.exports = {
     validateSlideGet,
+    validateSlideGetList,
 };
