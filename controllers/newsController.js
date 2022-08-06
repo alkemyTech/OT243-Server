@@ -1,4 +1,5 @@
 const NewsService = require('../services/news');
+const { urlPages } = require('../utils/pagination');
 const {
   OK,
   CREATED,
@@ -10,10 +11,32 @@ const {
 
 // GET ALL
 const getAllNews = async (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    message: 'This route is not yet defined!',
-  });
+  try {
+    // Consult service -> db
+    const news = await NewsService.getAll(req.query);
+
+    // PAGINATION
+    // Pages: previous, current, next, total.
+    const pages = urlPages(req, 'news');
+    const totalPages = Math.ceil(news.count / req.query.size);
+
+    res.status(OK).json({
+      status: 'success',
+      pages: {
+        totalPages,
+        ...pages,
+      },
+      data: {
+        news: news.rows,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(INTERNAL_SERVER_ERROR).json({
+      status: 'error',
+      message: `${err}`,
+    });
+  }
 };
 
 // GET ONE
