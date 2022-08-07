@@ -21,6 +21,14 @@ const validateSlideGet = [ // Constraints must to be defined
     errorHandler
   ];
 
+  const validateSlideDelete = [ // Constraints must to be defined
+// Validate Name
+    validateJWT,
+    check('id', 'Insert valid id').notEmpty().isInt(),
+    errorHandler
+  ];
+
 module.exports = {
     validateSlideGet,
+    validateSlideDelete,
 };
