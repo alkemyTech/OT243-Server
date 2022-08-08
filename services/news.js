@@ -66,6 +66,19 @@ class NewsService {
 
     return news;
   }
+
+  static async delete({ id }) {
+    // Delete a news
+    const news = await News.destroy({
+      where: {
+        id,
+      },
+    });
+
+    // Check if it exists or not
+    if (!news) throw new Error('No news found with that ID');
+    return 1;
+  }
 }
 
 module.exports = NewsService;
