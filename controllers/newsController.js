@@ -12,7 +12,6 @@ const {
 // GET ALL
 const getAllNews = async (req, res) => {
   try {
-    // Consult service -> db
     const news = await NewsService.getAll(req.query);
 
     // PAGINATION
@@ -61,7 +60,6 @@ const getNews = async (req, res) => {
 const createNews = async (req, res) => {
   try {
     const newNews = await NewsService.create(req.body);
-
     res.status(CREATED).json({
       status: 'success',
       data: {
@@ -80,7 +78,6 @@ const createNews = async (req, res) => {
 const updateNews = async (req, res) => {
   try {
     const newsUpdated = await NewsService.update(req.params, req.body);
-
     res.status(CREATED).json({
       status: 'success',
       data: {
@@ -96,12 +93,19 @@ const updateNews = async (req, res) => {
 };
 
 // DELETE
-const deleteNews = (req, res) => {
-  res.status(204).json({
-    status: 'success',
-    message: 'This route is not yet defined!',
-    data: null,
-  });
+const deleteNews = async (req, res) => {
+  try {
+    await NewsService.delete(req.params);
+    res.status(DELETED).json({
+      status: 'success',
+      data: null,
+    });
+  } catch (err) {
+    res.status(INTERNAL_SERVER_ERROR).json({
+      status: 'error',
+      message: err.message,
+    });
+  }
 };
 
 module.exports = {
