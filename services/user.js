@@ -19,9 +19,14 @@ class UserService {
     static async userDelete(id) {
         return await User.destroy({ where: { id } });
     }
+
+    // Este servicio deberá imeplementarse dentro del archivo de servicios de Contactos
     static async getAllContacts() {
-        return await User.findAll();
+        //return await Contact.findAll(); 
+        return await User.findAll(); // Borrar
     }
+    // Este servicio deberá imeplementarse dentro del archivo de servicios de Contactos
+
 }
 
 module.exports = UserService;

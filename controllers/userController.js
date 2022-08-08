@@ -126,7 +126,7 @@ const updateUser = async (req, res) => {
   }
 }
 
-
+// Mover al archivo de conctactController
 // Get all contacts
 const getContacts = async (req, res) => {
   const userId = req.payloadToken.userData.id;
@@ -142,7 +142,8 @@ const getContacts = async (req, res) => {
       });
     }
 
-    const allContacts = await UserService.getAllContacts();
+    //const allContacts = await ContactService.getAllContacts();
+    const allContacts = await UserService.getAllContacts(); // Borrar
 
     return res.status(OK).json({
       data: allContacts  
@@ -154,7 +155,11 @@ const getContacts = async (req, res) => {
     });
   }
 };
+// Mover al archivo de conctactController
 
 module.exports = { createUser, loginUser, updateUser, deleteUser, 
-  getContacts
+
+  // Mover al archivo de conctactController
+  getContacts // Dejar
+  // Mover al archivo de conctactController
 };
