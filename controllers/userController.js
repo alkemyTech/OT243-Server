@@ -125,4 +125,34 @@ const updateUser = async (req, res) => {
   }
 }
 
-module.exports = { createUser, loginUser, updateUser, deleteUser };
+// Get all users
+const getAllUsers = async (req, res) => {
+  // Get user id from payload token
+  const userId = req.payloadToken.userData.id;
+
+  try {
+    const userData = await UserService.getUser(userId);
+    const userIsAdmin = userData.dataValues.roleId;
+
+    // Check if the User has Admin role
+    if (userIsAdmin !== 1) {
+      return res.status(FORBIDDEN).json({
+        msg: 'User role is not Admin'
+      });
+    }
+
+    const allUsers = await UserService.getAllUsers();
+
+    return res.status(OK).json({
+      data: allUsers  
+    });
+  } catch (error) {
+    return res.status(INTERNAL_SERVER_ERROR).json({
+      msg: 'Get all users error',
+      message: error
+    });
+  }
+};
+// Mover al archivo de conctactController
+
+module.exports = { createUser, loginUser, updateUser, deleteUser, getAllUsers };

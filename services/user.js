@@ -19,6 +19,9 @@ class UserService {
     static async userDelete(id) {
         return await User.destroy({ where: { id } });
     }
+    static async getAllUsers() {
+        return await User.findAll();
+    }
 }
 
 module.exports = UserService;
