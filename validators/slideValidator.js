@@ -21,6 +21,18 @@ const validateSlideGet = [ // Constraints must to be defined
     errorHandler
   ];
 
+const validateSlideCreate = [
+    validateJWT,
+    isAdmin,
+    check('file', 'file required').notEmpty(),
+    check('text', 'text required').notEmpty(),
+    check('text', 'text to be string').isString(),
+    check('organizationId', 'organizationId required').notEmpty(),
+    check('organizationId', 'organizationId to be integer').isInt(),
+    errorHandler
+];
+
 module.exports = {
     validateSlideGet,
+    validateSlideCreate,
 };
