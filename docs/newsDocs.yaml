@@ -40,6 +40,38 @@ paths:
         500:
           $ref: '#/components/responses/ServerError'
 
+    get:
+      tags:
+        - news
+      summary: Obtener todas las novedades.
+      parameters:
+        - $ref: '#/components/parameters/token'
+        - name: page
+          in: query
+          description: Número de página (Empieza en 0)
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: Límite de novedades a listar.
+          schema:
+            type: integer
+      responses:
+        200:
+          description: (OK) Las novedades se obtuvieron correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSuccess'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/ServerError'
+
   /{id}:
     get:
       tags:
@@ -155,6 +187,18 @@ components:
       required: true
       schema:
         type: string
+    page:
+      in: query
+      name: page
+      description: Número de página.
+      schema:
+        type: integer
+    size:
+      in: query
+      name: size
+      description: Cantidad de registros a listar.
+      schema:
+        type: integer
 
   schemas:
     BodyPost:

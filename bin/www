@@ -58,9 +58,7 @@ function onError(error) {
     throw error;
   }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -83,9 +81,7 @@ function onError(error) {
 
 function onListening() {
   var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
+  var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
 
@@ -93,14 +89,14 @@ function onListening() {
  *  Conect ro DB
  */
 
- const { sequelize } = require('../models/index');
+const { sequelize } = require('../models/index');
 
- (async function dbConnect() {
-   try {
-     await sequelize.sync({ force: false });
-   console.log('Status: DB Connection successful...');
-   } catch (error) {
-     console.log('DB error conection');
-     console.log(error);
-   }
- })();
+(async function dbConnect() {
+  try {
+    await sequelize.sync({ force: false });
+    console.log('Status: DB Connection successful...');
+  } catch (error) {
+    console.log('DB error conection');
+    console.log(error);
+  }
+})();
