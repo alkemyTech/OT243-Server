@@ -7,6 +7,7 @@ const WelcomeMailService = require('../services/welcomEmail')
 const bcryptjs = require('bcryptjs');
 const { generateJWT } = require('../utils/jasonWebToken');
 const { encriptPass } = require('../utils/encriptPass');
+const { getAllContacts } = require('../services/user');
 
 // Create User Controller
 const createUser = async (req, res) => {
@@ -125,4 +126,35 @@ const updateUser = async (req, res) => {
   }
 }
 
-module.exports = { createUser, loginUser, updateUser, deleteUser };
+
+// Get all contacts
+const getContacts = async (req, res) => {
+  const userId = req.payloadToken.userData.id;
+
+  try {
+    const userData = await UserService.getUser(userId);
+    const userIsAdmin = userData.dataValues.roleId;
+
+    // Check if the User has Admin role
+    if (userIsAdmin !== 1) {
+      return res.status(FORBIDDEN).json({
+        msg: 'User role is not Admin'
+      });
+    }
+
+    const allContacts = await UserService.getAllContacts();
+
+    return res.status(OK).json({
+      data: allContacts  
+    });
+  } catch (error) {
+    return res.status(INTERNAL_SERVER_ERROR).json({
+      msg: 'Get all contacts error',
+      message: error
+    });
+  }
+};
+
+module.exports = { createUser, loginUser, updateUser, deleteUser, 
+  getContacts
+};

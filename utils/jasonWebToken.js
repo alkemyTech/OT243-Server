@@ -33,20 +33,11 @@ const validateJWT = async (req, res, next) => {
 
         try {
             const payload = jwt.verify(token, process.env.JWT_SECRET_PRIVATE_KEY);
-
-            // TODO Chekeamos que en la BD exista este usuario? Lo chekeamos por email o por ID?
-            // const user = await User.findOne({ where: { email } });;
-            // if (!user) {
-            //     return res.status(401).json({
-            //         msg: 'Invalid token - auth user does not exist'
-            //     });
-            // }
-
             req.payloadToken = payload;
             next();
         } catch (error) {
             console.log(error);
-            res.status(UNAUTHORIZED).json({
+            return res.status(UNAUTHORIZED).json({
                 msg: 'Invalid token'
             });
         }
