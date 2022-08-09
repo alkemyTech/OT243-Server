@@ -21,7 +21,7 @@ const createUser = async (req, res) => {
   try {
     // Create User in Data Base
     const { id, firstName, lastName, email } = await UserService.create(data);
-    const user ={ firstName , lastName,email}
+    const user = { firstName, lastName, email }
     const welcomeEmailSend = await WelcomeMailService.welcomeMail(user)
     res.status(OK).json({
       msg: 'User created',
@@ -121,8 +121,38 @@ const updateUser = async (req, res) => {
     return res.status(OK).json({ message: 'Datos de usuario actulizados'});
   } catch (error) {
     console.log(error);
-    return res.status(500).json({message: 'Internal Error'});    
+    return res.status(500).json({ message: 'Internal Error' });
   }
 }
 
-module.exports = { createUser, loginUser, updateUser, deleteUser };
+const getMyData = async (req, res) => {
+  // Get user id from payload token
+  const userId = req.payloadToken.userData.id;
+
+  try {
+    const { dataValues } = await UserService.getUser(userId); 
+
+    const userData = {
+      firstName: dataValues.firstName,
+      lastName: dataValues.lastName,
+      email: dataValues.email
+    };
+
+    return res.status(OK).json({
+      data: userData
+    });
+  } catch (error) {
+    return res.status(INTERNAL_SERVER_ERROR).json({
+      msg: 'Get your data error',
+      message: error
+    });
+  }
+};
+
+module.exports = {
+  createUser,
+  loginUser,
+  updateUser,
+  deleteUser,
+  getMyData
+};
