@@ -1,0 +1,305 @@
+openapi: 3.0.1
+info:
+  title: Somos más
+  description: API Proyecto ONG - Somos Más
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/news/
+tags:
+  - name: news
+    description: Manejo de las Novedades de la ONG.
+
+paths:
+  /:
+    post:
+      tags:
+        - news
+      summary: Agregar una Novedad.
+      parameters:
+        - $ref: '#/components/parameters/token'
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BodyPost'
+        required: true
+      responses:
+        200:
+          description: (OK) La novedad se creó correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostSuccess'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/ServerError'
+
+    get:
+      tags:
+        - news
+      summary: Obtener todas las novedades.
+      parameters:
+        - $ref: '#/components/parameters/token'
+        - name: page
+          in: query
+          description: Número de página (Empieza en 0)
+          schema:
+            type: integer
+        - name: size
+          in: query
+          description: Límite de novedades a listar.
+          schema:
+            type: integer
+      responses:
+        200:
+          description: (OK) Las novedades se obtuvieron correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSuccess'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/ServerError'
+
+  /{id}:
+    get:
+      tags:
+        - news
+      summary: Obtener los detalles de una Novedad.
+      parameters:
+        - $ref: '#/components/parameters/token'
+        - name: id
+          in: path
+          description: Id de la Novedad.
+          required: true
+          schema:
+            type: string
+
+      responses:
+        200:
+          description: (OK) La información de la novedad se obtuvo correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSuccess'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/ServerError'
+
+    put:
+      tags:
+        - news
+      summary: Actualiza la informacion de una novedad
+      parameters:
+        - $ref: '#/components/parameters/token'
+        - name: id
+          in: path
+          description: Id de la Novedad.
+          required: true
+          schema:
+            type: string
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutSuccess'
+
+      responses:
+        200:
+          description: (OK) La información de la novedad se actualizo correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostSuccess'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/ServerError'
+
+    delete:
+      tags:
+        - news
+      summary: Elimina una novedad.
+      parameters:
+        - $ref: '#/components/parameters/token'
+        - name: id
+          in: path
+          description: Id de la Novedad.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: (OK) La novedad se eliminó correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostSuccess'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        401:
+          $ref: '#/components/responses/Unauthorized'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/ServerError'
+
+components:
+  responses:
+    Unauthorized:
+      description: (Unauthorized) No autorizado.
+
+    NotFound:
+      description: (Not Found) No se encontró el recurso solicitado.
+
+    BadRequest:
+      description: (Bad Request) Los datos enviados son incorrectos o hay datos obligatorios no enviados.
+
+    ServerError:
+      description: Error en el servidor.
+
+  parameters:
+    token:
+      in: header
+      name: token
+      description: Token de autorización.
+      required: true
+      schema:
+        type: string
+    page:
+      in: query
+      name: page
+      description: Número de página.
+      schema:
+        type: integer
+    size:
+      in: query
+      name: size
+      description: Cantidad de registros a listar.
+      schema:
+        type: integer
+
+  schemas:
+    BodyPost:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre de la novedad.
+        content:
+          type: string
+          description: Contenido de la novedad.
+        image:
+          type: string
+          description: Referencia a la imagen (imgName.jpg)
+        categoryId:
+          type: integer
+          description: Id de la Categoría a la que pertenece.
+
+    PostSuccess:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: ['success']
+          description: Indica que la llamada al servicio fue satisfactoria.
+        data:
+          type: object
+          properties:
+            news:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  enum: [1]
+                name:
+                  type: string
+                  enum: ['Más educación']
+                content:
+                  type: string
+                  enum: ['Lorem Ipsum is simply dummy text.']
+                image:
+                  type: string
+                  enum: ['edu.jpg']
+                categoryId:
+                  type: integer
+                  enum: [1]
+
+    GetSuccess:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: ['success']
+          description: Indica que la llamada al servicio fue satisfactoria.
+        data:
+          type: object
+          properties:
+            news:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  enum: [1]
+                name:
+                  type: string
+                  enum: ['Más educación']
+                content:
+                  type: string
+                  enum: ['Lorem Ipsum is simply dummy text.']
+                image:
+                  type: string
+                  enum: ['edu.jpg']
+                categoryId:
+                  type: integer
+                  enum: [1]
+
+    PutSuccess:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: ['success']
+          description: Indica que la llamada al servicio fue satisfactoria.
+        data:
+          type: object
+          properties:
+            news:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  enum: [1]
+                name:
+                  type: string
+                  enum: ['Nuevo convenio']
+                content:
+                  type: string
+                  enum: ['Lorem Ipsum is simply dummy text.']
+                image:
+                  type: string
+                  enum: ['edu.jpg']
+                categoryId:
+                  type: integer
+                  enum: [1]
