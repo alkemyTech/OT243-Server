@@ -12,6 +12,9 @@ const {
 // GET ALL
 const getAllNews = async (req, res) => {
   try {
+
+    // Consult service -> db
+
     const news = await NewsService.getAll(req.query);
 
     // PAGINATION

@@ -29,11 +29,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/categories', categoriesRouter);
-app.use('/members', membersRouter);
-app.use('/organizations/', organizationsRouter);
-app.use('/api/members', membersRouter);
+
+app.use('/categories',categoriesRouter);
+app.use('/members',membersRouter);
 app.use('/Slides',slidesRouter);
+app.use('/organizations/',organizationsRouter);
+
 
 app.use('/news', newsRouter);
 // app.get('/email', (req, res) => {
