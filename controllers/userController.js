@@ -22,7 +22,7 @@ const createUser = async (req, res) => {
   try {
     // Create User in Data Base
     const { id, firstName, lastName, email } = await UserService.create(data);
-    const user ={ firstName , lastName,email}
+    const user = { firstName, lastName, email }
     const welcomeEmailSend = await WelcomeMailService.welcomeMail(user)
     res.status(OK).json({
       msg: 'User created',
@@ -122,44 +122,38 @@ const updateUser = async (req, res) => {
     return res.status(OK).json({ message: 'Datos de usuario actulizados'});
   } catch (error) {
     console.log(error);
-    return res.status(500).json({message: 'Internal Error'});    
+    return res.status(500).json({ message: 'Internal Error' });
   }
 }
 
-// Mover al archivo de conctactController
-// Get all contacts
-const getContacts = async (req, res) => {
+const getMyData = async (req, res) => {
+  // Get user id from payload token
   const userId = req.payloadToken.userData.id;
 
   try {
-    const userData = await UserService.getUser(userId);
-    const userIsAdmin = userData.dataValues.roleId;
+    const { dataValues } = await UserService.getUser(userId); 
 
-    // Check if the User has Admin role
-    if (userIsAdmin !== 1) {
-      return res.status(FORBIDDEN).json({
-        msg: 'User role is not Admin'
-      });
-    }
-
-    //const allContacts = await ContactService.getAllContacts();
-    const allContacts = await UserService.getAllContacts(); // Borrar
+    const userData = {
+      firstName: dataValues.firstName,
+      lastName: dataValues.lastName,
+      email: dataValues.email
+    };
 
     return res.status(OK).json({
-      data: allContacts  
+      data: userData
     });
   } catch (error) {
     return res.status(INTERNAL_SERVER_ERROR).json({
-      msg: 'Get all contacts error',
+      msg: 'Get your data error',
       message: error
     });
   }
 };
-// Mover al archivo de conctactController
 
-module.exports = { createUser, loginUser, updateUser, deleteUser, 
-
-  // Mover al archivo de conctactController
-  getContacts // Dejar
-  // Mover al archivo de conctactController
+module.exports = {
+  createUser,
+  loginUser,
+  updateUser,
+  deleteUser,
+  getMyData
 };
