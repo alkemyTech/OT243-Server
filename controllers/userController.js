@@ -21,7 +21,7 @@ const createUser = async (req, res) => {
   try {
     // Create User in Data Base
     const { id, firstName, lastName, email } = await UserService.create(data);
-    const user ={ firstName , lastName,email}
+    const user = { firstName, lastName, email }
     const welcomeEmailSend = await WelcomeMailService.welcomeMail(user)
     res.status(OK).json({
       msg: 'User created',
@@ -121,12 +121,11 @@ const updateUser = async (req, res) => {
     return res.status(OK).json({ message: 'Datos de usuario actulizados'});
   } catch (error) {
     console.log(error);
-    return res.status(500).json({message: 'Internal Error'});    
+    return res.status(500).json({ message: 'Internal Error' });
   }
 }
 
-// Get all users
-const getAllUsers = async (req, res) => {
+const getMyData = async (req, res) => {
   // Get user id from payload token
   const userId = req.payloadToken.userData.id;
 
@@ -153,6 +152,11 @@ const getAllUsers = async (req, res) => {
     });
   }
 };
-// Mover al archivo de conctactController
 
-module.exports = { createUser, loginUser, updateUser, deleteUser, getAllUsers };
+module.exports = {
+  createUser,
+  loginUser,
+  updateUser,
+  deleteUser,
+  getMyData
+};
