@@ -1,3 +1,11 @@
+const ActivityService = require('../services/activity');
+const {
+  OK,
+  CREATED,
+  DELETED,
+  INTERNAL_SERVER_ERROR,
+} = require('../utils/httpCodes');
+
 // GET ALL
 const getAllActivities = (req, res) => {
   res.status(200).json({
@@ -15,11 +23,21 @@ const getActivity = (req, res) => {
 };
 
 // POST
-const createActivity = (req, res) => {
-  res.status(201).json({
-    status: 'success',
-    message: 'This route is not yet defined!',
-  });
+const createActivity = async (req, res) => {
+  try {
+    const newActivity = await ActivityService.create(req.body);
+    res.status(CREATED).json({
+      status: 'success',
+      data: {
+        activities: newActivity,
+      },
+    });
+  } catch (err) {
+    res.status(INTERNAL_SERVER_ERROR).json({
+      status: 'error',
+      message: err,
+    });
+  }
 };
 
 // UPDATE
