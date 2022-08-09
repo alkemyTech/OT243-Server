@@ -20,6 +20,20 @@ class SlideService {
             order: order || indexOrder,
         });
     }
+    
+    static async updateSlide({ id, file, order, text, organizationId }) {
+        let indexOrder;
+        const image = base64js.toByteArray(file);
+        //funcion para cargar imagen en aws s3 y devolver url 
+        return await Slide.update({
+            text,
+            organizationId,
+            imageUrl: 'urlgenerica',
+            order: order || indexOrder,
+        }, { 
+           where: { id }
+        });
+    }
 }
 
 module.exports = SlideService;
