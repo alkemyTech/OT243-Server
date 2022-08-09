@@ -150,9 +150,34 @@ const updateUser = async (req, res) => {
   }
 }
 
+const getMyData = async (req, res) => {
+  // Get user id from payload token
+  const userId = req.payloadToken.userData.id;
+
+  try {
+    const { dataValues } = await UserService.getUser(userId); 
+
+    const userData = {
+      firstName: dataValues.firstName,
+      lastName: dataValues.lastName,
+      email: dataValues.email
+    };
+
+    return res.status(OK).json({
+      data: userData
+    });
+  } catch (error) {
+    return res.status(INTERNAL_SERVER_ERROR).json({
+      msg: 'Get your data error',
+      message: error
+    });
+  }
+};
+
 module.exports = {
   createUser,
   loginUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  getMyData
 };
