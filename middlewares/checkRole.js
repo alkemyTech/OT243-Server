@@ -1,10 +1,12 @@
+
+const { userExist } = require('../services/user');
 const httpStatus = require('../utils/httpStatus')
 const UserRole = require('../utils/roles')
 
 
 class CheckRole {
 
-    static  isAdmin( req, res, next) {
+    static  async isAdmin  ( req, res, next) {
 
         //check con token generado!! 
         
@@ -19,8 +21,9 @@ class CheckRole {
         }
         else{
 
-        const user = jwt.verify(token,  process.env.JWT_SECRET_PRIVATE_KEY)
-    
+        const tokkenDATA = req.payloadToken
+        const user = await userExist(tokkenDATA.userData.id)
+            
             if ( user.roleId !== UserRole.ADMIN){
                 res
                     .status(httpStatus.UNAUTHORIZED)
