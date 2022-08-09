@@ -12,6 +12,8 @@ const categoriesRouter = require('./routes/categories');
 const membersRouter = require('./routes/member');
 const organizationsRouter = require('./routes/organizations');
 const commentRouter= require('./routes/comments')
+const slidesRouter = require('./routes/slide');
+
 
 const newsRouter = require('./routes/news');
 const app = express();
@@ -30,12 +32,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-
 app.use('/categories',categoriesRouter);
 app.use('/members',membersRouter);
+app.use('/Slides',slidesRouter);
 app.use('/organizations/',organizationsRouter);
+
+
 app.use('/news', newsRouter);
+
 app.use('/comments', commentRouter);
+
+// app.get('/email', (req, res) => {
+//   res.render('welcome');
+// });
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
