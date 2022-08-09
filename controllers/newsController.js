@@ -1,4 +1,5 @@
 const NewsService = require('../services/news');
+const { urlPages } = require('../utils/pagination');
 const {
   OK,
   CREATED,
@@ -10,10 +11,31 @@ const {
 
 // GET ALL
 const getAllNews = async (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    message: 'This route is not yet defined!',
-  });
+  try {
+    const news = await NewsService.getAll(req.query);
+
+    // PAGINATION
+    // Pages: previous, current, next, total.
+    const pages = urlPages(req, 'news');
+    const totalPages = Math.ceil(news.count / req.query.size);
+
+    res.status(OK).json({
+      status: 'success',
+      pages: {
+        totalPages,
+        ...pages,
+      },
+      data: {
+        news: news.rows,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(INTERNAL_SERVER_ERROR).json({
+      status: 'error',
+      message: `${err}`,
+    });
+  }
 };
 
 // GET ONE
@@ -38,7 +60,6 @@ const getNews = async (req, res) => {
 const createNews = async (req, res) => {
   try {
     const newNews = await NewsService.create(req.body);
-
     res.status(CREATED).json({
       status: 'success',
       data: {
@@ -57,7 +78,6 @@ const createNews = async (req, res) => {
 const updateNews = async (req, res) => {
   try {
     const newsUpdated = await NewsService.update(req.params, req.body);
-
     res.status(CREATED).json({
       status: 'success',
       data: {
@@ -73,12 +93,19 @@ const updateNews = async (req, res) => {
 };
 
 // DELETE
-const deleteNews = (req, res) => {
-  res.status(204).json({
-    status: 'success',
-    message: 'This route is not yet defined!',
-    data: null,
-  });
+const deleteNews = async (req, res) => {
+  try {
+    await NewsService.delete(req.params);
+    res.status(DELETED).json({
+      status: 'success',
+      data: null,
+    });
+  } catch (err) {
+    res.status(INTERNAL_SERVER_ERROR).json({
+      status: 'error',
+      message: err.message,
+    });
+  }
 };
 
 module.exports = {

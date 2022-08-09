@@ -5,7 +5,14 @@ const { validateCreate } = require('../validators/newsValidator');
 const router = express.Router();
 
 // TODO: Implement Protected Route for admin
-router.route('/').post(validateCreate, newsController.createNews);
-router.route('/:id').get(newsController.getNews).put(newsController.updateNews);
+router
+  .route('/')
+  .get(newsController.getAllNews)
+  .post(validateCreate, newsController.createNews);
+router
+  .route('/:id')
+  .get(newsController.getNews)
+  .put(newsController.updateNews)
+  .delete(newsController.deleteNews);
 
 module.exports = router;
