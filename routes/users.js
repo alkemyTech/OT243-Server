@@ -20,4 +20,9 @@ router.patch('/:id', validateUserUpdate, updateUser);
 /* DELETE Delete User - URL: ../users/:id */
 router.delete('/:id', deleteUser);
 
+// Esta ruta deberá imeplementarse dentro del archivo de rutas de Contactos
+/* GET List of Contacts User - URL: ../contacts */
+router.get('/contacts', validateJWT, getContacts);
+// Esta ruta deberá imeplementarse dentro del archivo de rutas de Contactos
+
 module.exports = router;

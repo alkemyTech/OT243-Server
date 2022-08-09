@@ -9,6 +9,8 @@ router
   .route('/')
   .get(newsController.getAllNews)
   .post(validateCreate, newsController.createNews);
+
 router.route('/:id').get(newsController.getNews).put(newsController.updateNews);
+
 
 module.exports = router;
