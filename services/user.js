@@ -7,6 +7,9 @@ class UserService {
     static async userLogin(email) {
         return await User.findOne({ where: { email } });
     }
+    static async getUser(id) {
+        return await User.findByPk(id);
+    }
     static async userExist(id) {
         return await User.findOne({ where: { id } });
     }
@@ -15,6 +18,9 @@ class UserService {
     }
     static async userDelete(id) {
         return await User.destroy({ where: { id } });
+    }
+    static async getAllUsers() {
+        return await User.findAll();
     }
 }
 
