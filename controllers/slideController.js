@@ -30,4 +30,23 @@ module.exports = {
       });
     }
   },
+  updateSlide: async function(req, res) {
+    const { id } = req.params;
+    const { body } = req;
+
+    const existe = await SlideService.getSlide(id);
+    if (!existe) {
+      return res.status(RESOURCE_NOT_FOUND).json({ message: 'resourse not found' });
+    }
+    
+    try {
+      await SlideService.update({ id, ...body });
+      return res.status(OK).json({ message: 'Slide created' })
+    } catch (error) {
+      console.log(error);
+      return res.status(INTERNAL_SERVER_ERROR).json({
+        message: 'Internal Error, call sys admin',
+      });
+    }
+  },
 }
