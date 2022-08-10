@@ -5,6 +5,9 @@ class SlideService {
     static async getSlide(id) {
         return await Slide.findByPk(id);
     }
+    static async deleteSlide(id) {
+        return await Slide.destroy({ where: { id } });
+    }
     static async createSlide({ file, order, text, organizationId }) {
         let indexOrder;
         const image = base64js.toByteArray(file);
