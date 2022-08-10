@@ -131,20 +131,24 @@ const getMyData = async (req, res) => {
   const userId = req.payloadToken.userData.id;
 
   try {
-    const { dataValues } = await UserService.getUser(userId); 
+    const userData = await UserService.getUser(userId);
+    const userIsAdmin = userData.dataValues.roleId;
 
-    const userData = {
-      firstName: dataValues.firstName,
-      lastName: dataValues.lastName,
-      email: dataValues.email
-    };
+    // Check if the User has Admin role
+    if (userIsAdmin !== 1) {
+      return res.status(FORBIDDEN).json({
+        msg: 'User role is not Admin'
+      });
+    }
+
+    const allUsers = await UserService.getAllUsers();
 
     return res.status(OK).json({
-      data: userData
+      data: allUsers  
     });
   } catch (error) {
     return res.status(INTERNAL_SERVER_ERROR).json({
-      msg: 'Get your data error',
+      msg: 'Get all users error',
       message: error
     });
   }
