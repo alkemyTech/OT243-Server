@@ -1,4 +1,4 @@
-const ImageRepository = require('../repositories/imageRepository');
+const ImageRepository = require('../utils/imageRepository');
 const imageRepository = new ImageRepository();
 
 const uploadImageService = async (imageName, file) => {
