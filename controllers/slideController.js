@@ -1,6 +1,6 @@
 const SlideService = require('../services/slide');
 const { OK, RESOURCE_NOT_FOUND } = require('../utils/httpCodes');
-const { INTERNAL_SERVER_ERROR } = require('../utils/httpStatus');
+const { INTERNAL_SERVER_ERROR, CREATED } = require('../utils/httpStatus');
 
 module.exports = {
   getSlide: async function(req, res) {
@@ -29,6 +29,17 @@ module.exports = {
       return res.status(OK).json({
         message: 'Resource deleted',
       });
+    } catch (error) {
+      console.log(error);
+      return res.status(INTERNAL_SERVER_ERROR).json({
+        message: 'Internal Error, call sys admin',
+      });
+    }
+  createSlide: async function(req, res) {
+    const { body } = req;
+    try {
+      await SlideService.createSlide(body);
+      return res.status(CREATED).json({ message: 'Slide created' })
     } catch (error) {
       console.log(error);
       return res.status(INTERNAL_SERVER_ERROR).json({
