@@ -10,8 +10,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       News.belongsTo(models.Category, {
-        foreignKey: 'id',
+
+        foreignKey: 'categoryId',
       //  targetKey: 'categoryId',
+
       });
     }
   }
@@ -21,10 +23,12 @@ module.exports = (sequelize, DataTypes) => {
       content: DataTypes.TEXT,
       image: DataTypes.STRING,
       categoryId: DataTypes.INTEGER,
+      deletedAt: DataTypes.DATE,
     },
     {
       sequelize,
       modelName: 'News',
+      paranoid: true,
     }
   );
   return News;

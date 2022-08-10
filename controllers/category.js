@@ -1,9 +1,10 @@
-const {CLIENT_ERROR,CREATED,DELETED} = require("../utils/httpCodes.js");
+const {CLIENT_ERROR,CREATED,DELETED, OK} = require("../utils/httpCodes.js");
 const CategoryService = require("../services/category.js");
 
 const getCategories = async (req,res) => {
     try {
-        const categories = await CategoryService.findAll();
+        const { page } = req.query;
+        const categories = await CategoryService.findAll(page);
         res.json(categories);
     } catch (error) {
         res.status(CLIENT_ERROR).json(error);
@@ -23,7 +24,9 @@ const getCategory = async (req,res) => {
 const createCategory = async (req, res) => {
     try {
         //TODO:implementar el repositorio
-        res.status(CREATED).json({msg:"category created"})
+        const { name } = req.body;
+        const newCategory = await CategoryService.createCategory(name);
+        res.status(CREATED).json(newCategory);
     } catch (error) {
         res.status(CLIENT_ERROR).json(error);
     }
@@ -42,8 +45,8 @@ const modifyCategory = async (req, res) => {
 const deleteCategory = async (req, res) => {
     try {
         const {id} = req.params
-         //TODO:implementar el repositorio
-        res.status(DELETED).json({msg:"category deleted"})
+        const deleted = await CategoryService.deleteCategory(id);
+        res.status(OK).json({deleted})
     } catch (error) {
         res.status(CLIENT_ERROR).json(error);
     }
