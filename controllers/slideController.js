@@ -18,6 +18,17 @@ module.exports = {
       });
     }
   },
+  getListSlide: async function (req, res) {
+    try {
+      const slides = await SlideService.getListSlide();
+      return res.status(OK).json({ slides });
+    } catch (error) {
+      console.log(error);
+      return res.status(INTERNAL_SERVER_ERROR).json({
+        message: 'Internal Error, call sys admin',
+      });
+    }
+  },
   deleteSlide: async function(req, res) {
     const { id } = req.params;
     try {
