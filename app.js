@@ -42,7 +42,6 @@ app.use('/members',membersRouter);
 app.use('/Slides',slidesRouter);
 app.use('/organizations/',organizationsRouter);
 
-
 app.use('/news', newsRouter);
 
 app.use('/testimonials', testimonialsRouter)
@@ -54,6 +53,7 @@ app.use('/comments', commentRouter);
 // app.get('/email', (req, res) => {
 //   res.render('welcome');
 // });
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
