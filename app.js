@@ -11,15 +11,13 @@ const usersRouter = require('./routes/users');
 const categoriesRouter = require('./routes/categories');
 const membersRouter = require('./routes/member');
 const organizationsRouter = require('./routes/organizations');
-
+const testimonialsRouter = require('./routes/testimonials')
 const contactsRouter = require('./routes/contacts')
-
 const commentRouter= require('./routes/comments')
 const slidesRouter = require('./routes/slide');
-
-
-
 const newsRouter = require('./routes/news');
+const activitiesRouter = require('./routes/activities');
+
 const app = express();
 app.use(cors());
 
@@ -33,20 +31,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
 app.use('/categories',categoriesRouter);
 app.use('/members',membersRouter);
 app.use('/Slides',slidesRouter);
 app.use('/organizations/',organizationsRouter);
-
 app.use('/news', newsRouter);
-
-
+app.use('/activities', activitiesRouter);
+app.use('/testimonials', testimonialsRouter)
 app.use('/contacts', contactsRouter);
-
-
 app.use('/comments', commentRouter);
 
 // app.get('/email', (req, res) => {
@@ -55,6 +50,7 @@ app.use('/comments', commentRouter);
 
 
 // catch 404 and forward to error handler
+
 app.use(function (req, res, next) {
   next(createError(404));
 });

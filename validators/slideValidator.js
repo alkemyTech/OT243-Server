@@ -21,6 +21,19 @@ const validateSlideGet = [ // Constraints must to be defined
     errorHandler
   ];
 
+const validateSlideGetList = [ // Constraints must to be defined
+// Validate Name
+    validateJWT,
+    errorHandler
+  ];
+
+const validateSlideDelete = [ // Constraints must to be defined
+// Validate Name
+    validateJWT,
+    check('id', 'Insert valid id').notEmpty().isInt(),
+    errorHandler
+  ];
+
 const validateSlideCreate = [
     validateJWT,
     isAdmin,
@@ -32,7 +45,23 @@ const validateSlideCreate = [
     errorHandler
 ];
 
+const validateSlideUpdate = [
+    validateJWT,
+    isAdmin,
+    check('id', 'id required').notEmpty(),
+    check('id', 'id to be int').isInt(),
+    check('file', 'file required').notEmpty(),
+    check('text', 'text required').notEmpty(),
+    check('text', 'text to be string').isString(),
+    check('organizationId', 'organizationId required').notEmpty(),
+    check('organizationId', 'organizationId to be integer').isInt(),
+    errorHandler
+];
+
 module.exports = {
     validateSlideGet,
     validateSlideCreate,
+    validateSlideUpdate,
+    validateSlideDelete,
+    validateSlideGetList,
 };
