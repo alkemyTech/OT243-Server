@@ -12,5 +12,6 @@ const validateComment = [
 
 
 module.exports = {
-    validateComment, 
+    validateComment,
+    
 };

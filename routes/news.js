@@ -1,7 +1,7 @@
 const express = require('express');
 const newsController = require('../controllers/newsController');
 const { validateCreate } = require('../validators/newsValidator');
-
+const { getCommentByNewId } = require("../controllers/commentController");
 const router = express.Router();
 
 // TODO: Implement Protected Route for admin
@@ -12,5 +12,6 @@ router
 
 router.route('/:id').get(newsController.getNews).put(newsController.updateNews);
 
+router.get("/:id/comments",getCommentByNewId);
 
 module.exports = router;

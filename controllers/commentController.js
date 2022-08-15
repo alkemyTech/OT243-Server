@@ -26,7 +26,7 @@ const deleteComment = async (req, res) => {
 const createComment = async (req, res) => {
   try {
     const created = await CommentService.create(req.body)
-    res.status(httpCodes.CREATED).json({ msg: "created", ...created })
+    res.status(httpCodes.CREATED).json({ msg: "created", created })
   } catch (error) {
     res.status(httpCodes.INTERNAL_SERVER_ERROR).json({msg:error});
   }
@@ -40,10 +40,21 @@ const updateComment = async (req, res) => {
     res.status(httpCodes.INTERNAL_SERVER_ERROR).json({msg:error});
   }
 }
+
+const getCommentByNewId = async (req, res) => {
+  try {
+    const { id } = req.params
+    const comments = await CommentService.getByNewId(Number(id));
+    res.status(httpCodes.OK).json(comments)
+  } catch (error) {
+    res.status(httpCodes.INTERNAL_SERVER_ERROR).json({msg:error.message});
+  }
+}
+
 module.exports = {
   getAllComments,
   deleteComment,
   createComment,
   updateComment,
-
+  getCommentByNewId,
 };

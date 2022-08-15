@@ -3,6 +3,7 @@ const CommentModel = require("../models").Comment;
 
 // controlar cuando el modelo tiene paranoid:true
 class CommentService {
+
   static async getAll() {
     const comments = await CommentModel.findAll({
       attributes: ["body", "createdAt"],
@@ -15,6 +16,9 @@ class CommentService {
     }
   }
 
+  static async getByNewId(id) {
+    return await CommentModel.findAll({ where: { news_id: id } })
+  }
   static async delete(id) {
     return await CommentModel.destroy({ where : { id } })
   }

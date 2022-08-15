@@ -17,7 +17,7 @@ router.delete("/:id",validateJWT,CheckRole.isAdmin,deleteComment)
 
 router.post("/",validateJWT,CheckRole.isAdmin,validateComment,createComment)
 
-router.put("/:id",validateJWT,updateComment)
+router.put("/:id",validateJWT,validateComment,updateComment)
 
 
 
