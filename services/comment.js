@@ -14,6 +14,16 @@ class CommentService {
       return "Comments not Found";
     }
   }
+
+  static async delete(id) {
+    return await CommentModel.destroy({ where : { id } })
+  }
+  static async create(body) {
+    return await CommentModel.create({...body});
+  }
+  static async update(id,body) {
+    return await CommentModel.update({...body},{ where: { id } })
+  }
 }
 
 module.exports = CommentService;
