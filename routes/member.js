@@ -4,6 +4,10 @@ const { validateMember } = require('../validators/memberValidator');
 
 const router = express.Router();
 
-router.route('/').post(validateMember, memberController.createMember);
+// TODO: getAll - Add protected route for admin.
+router
+  .route('/')
+  .post(validateMember, memberController.createMember)
+  .get(memberController.getAllMembers);
 
 module.exports = router;
