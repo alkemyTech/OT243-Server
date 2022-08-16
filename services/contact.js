@@ -11,6 +11,9 @@ class ContactService {
       return "Contact Not Found";
     }
   }
+  static async createContact(data) {
+    return await Contact.create(data);
+  }
 }
 
 module.exports = ContactService;

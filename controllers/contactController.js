@@ -1,5 +1,6 @@
 const ContactService = require("../services/contact");
 const { OK, INTERNAL_SERVER_ERROR } = require("../utils/httpCodes");
+const WelcomeMailService = require('../services/welcomEmail');
 
 const getAllBackOfficeContact = async (req, res) => {
   try {
@@ -17,9 +18,13 @@ const createContact = async (req, res) => {
   const contact = req.body;
 
   try {
+    const contactCreated = await ContactService.createContact(contact);
+    const welcomeEmailSend = await WelcomeMailService.welcomeMail(contactCreated);
+
     return res.status(OK).json({
       msg: 'Contact created',
-      contact
+      contactCreated,
+      welcomeEmailSend
     });
   } catch (error) {
     return res.status(INTERNAL_SERVER_ERROR).json({
