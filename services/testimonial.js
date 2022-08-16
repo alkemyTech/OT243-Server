@@ -2,6 +2,19 @@
 const TestimonialModel = require("../models").Testimonial;
 
 class TestimonialService {
+
+
+
+static async  createTestimonial(data){
+    const {name,content}= data
+    const newTestimonial = await TestimonialModel.create({name,content})
+    
+    if(newTestimonial) {
+        return newTestimonial
+    } else {
+        return 'Create unsuccessful'
+    }
+}    
 static async updateTestimonial(dataUpdate, id) {
 
     const updateTestimonial = await TestimonialModel.findByPk(id)
