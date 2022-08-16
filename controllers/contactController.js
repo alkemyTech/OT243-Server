@@ -1,20 +1,35 @@
 const ContactService = require("../services/contact");
-const httpCodes = require("../utils/httpCodes");
+const { OK, INTERNAL_SERVER_ERROR } = require("../utils/httpCodes");
 
 const getAllBackOfficeContact = async (req, res) => {
-
   try {
     allContact = await ContactService.getAllBackOfficeContact();
-    res.status(httpCodes.OK).json({
+    return res.status(OK).json({
       msg: "All Contact",
       allContact,
     });
   } catch (error) {
-    res.status(httpCodes.INTERNAL_SERVER_ERROR).json(error);
+    return res.status(INTERNAL_SERVER_ERROR).json(error);
   }
 };
 
+const createContact = async (req, res) => {
+  const contact = req.body;
 
-module.exports={
-    getAllBackOfficeContact,
+  try {
+    return res.status(OK).json({
+      msg: 'Contact created',
+      contact
+    });
+  } catch (error) {
+    return res.status(INTERNAL_SERVER_ERROR).json({
+      msg: 'Contact not created',
+      error
+    });
+  }
+};
+
+module.exports = {
+  getAllBackOfficeContact,
+  createContact
 }
