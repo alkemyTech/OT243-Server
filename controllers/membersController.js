@@ -1,4 +1,5 @@
 const MemberService = require('../services/member');
+const { urlPages } = require('../utils/pagination');
 const {
   OK,
   CREATED,
@@ -7,10 +8,32 @@ const {
 } = require('../utils/httpCodes');
 
 //GET ALL
-const getAllMembers = (req, res) => {
-  res.status(200).json({
-    message: 'GetAll',
-  });
+const getAllMembers = async (req, res) => {
+  try {
+    // Consult service
+    const members = await MemberService.getAll(req.query);
+
+    // PAGINATION
+    // Pages: previous, current, next, total.
+    const pages = urlPages(req, 'members');
+    const totalPages = Math.ceil(members.count / req.query.size);
+
+    res.status(OK).json({
+      status: 'success',
+      pages: {
+        totalPages,
+        ...pages,
+      },
+      data: {
+        members: members.rows,
+      },
+    });
+  } catch (err) {
+    res.status(INTERNAL_SERVER_ERROR).json({
+      status: 'error',
+      message: `${err}`,
+    });
+  }
 };
 //GET ONE
 const getMembers = (req, res) => {
