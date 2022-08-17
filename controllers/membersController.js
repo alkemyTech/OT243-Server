@@ -61,23 +61,43 @@ const createMember = async (req, res) => {
 };
 
 // UPDATE
-const updateMembers = (req, res) => {
-  res.status(200).json({
-    message: 'Update',
-  });
+const updateMember = async (req, res) => {
+  try {
+    const memberUpdated = await MemberService.update(req.params, req.body);
+    res.status(CREATED).json({
+      status: 'success',
+      data: {
+        member: memberUpdated,
+      },
+    });
+  } catch (err) {
+    res.status(INTERNAL_SERVER_ERROR).json({
+      status: 'error',
+      message: err.message,
+    });
+  }
 };
 
 // DELETE
-const deleteMembers = (req, res) => {
-  res.status(204).json({
-    message: 'Delete',
-  });
+const deleteMember = async (req, res) => {
+  try {
+    await MemberService.delete(req.params);
+    res.status(DELETED).json({
+      status: 'success',
+      data: null,
+    });
+  } catch (err) {
+    res.status(INTERNAL_SERVER_ERROR).json({
+      status: 'error',
+      message: err.message,
+    });
+  }
 };
 
 module.exports = {
   getAllMembers,
   getMembers,
   createMember,
-  updateMembers,
-  deleteMembers,
+  updateMember,
+  deleteMember,
 };

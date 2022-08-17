@@ -39,6 +39,39 @@ class MemberService {
       offset: page * size,
     });
   }
+
+  static async update({ id }, data) {
+    const { name, content, image } = data;
+
+    // Search in DB
+    const member = await Member.findByPk(id);
+
+    // Check if it exists or not
+    if (!member) throw new Error('No member found with that ID');
+
+    // Update member
+    member.set({
+      name,
+      content,
+      image,
+    });
+    await member.save();
+
+    return member;
+  }
+
+  static async delete({ id }) {
+    // Delete a member
+    const member = await Member.destroy({
+      where: {
+        id,
+      },
+    });
+
+    // Check if it exists or not
+    if (!member) throw new Error('No member found with that ID');
+    return 1;
+  }
 }
 
 module.exports = MemberService;
