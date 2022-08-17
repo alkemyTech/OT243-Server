@@ -10,4 +10,9 @@ router
   .post(validateMember, memberController.createMember)
   .get(memberController.getAllMembers);
 
+router
+  .route('/:id')
+  .put(memberController.updateMember)
+  .delete(memberController.deleteMember);
+
 module.exports = router;
