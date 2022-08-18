@@ -14,41 +14,42 @@ const errorHandler = (req, res, next) => {
 }
 
 const validateUserRegister = [ // Constraints must to be defined
-// Validate Name
-    body('firstName', 'Ingrese un nombre válido')
-    .exists()
+    // Validate Name
+    body('firstName', 'Invalid Name')
+        .exists()
         .isLength({ min: 2 }),
     // Validate Suername
-    body('lastName', 'Ingrese un apellido válido')
+    body('lastName', 'Invalid Last Name')
         .exists()
         .isLength({ min: 2 }),
     // Validate Email
-    body('email', 'Ingrese un email válido')
-    .exists()
+    body('email', 'Invalid Email')
+        .exists()
         .isEmail(),
     // Validate Password Length
-    body('password', 'La contraseña debe tener mas de 5 caracteres')
+    body('password', 'Invalid Password')
         .isLength({ min: 5 }),
     errorHandler
-  ];
-  
-  const validateUserLogin = [
+];
+
+const validateUserLogin = [
     // Validate Email
     body('email', 'Invalid email')
-    .exists()
-    .isEmail(),
+        .exists()
+        .isEmail(),
     // Validate Password
     body('password', 'Invalid Password')
-    .isLength({ min: 5 }),
+        .isLength({ min: 5 }),
     errorHandler
-  ];
-  
-  const validateUserUpdate = [
-    check('id', 'id required').notEmpty(),
+];
+
+const validateUserUpdate = [
+    check('id', 'Id required')
+        .notEmpty(),
     validateJWT,
     ownership,
     errorHandler
-  ];
+];
 
 module.exports = {
     validateUserRegister,
