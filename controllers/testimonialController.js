@@ -21,6 +21,7 @@ const getTestimonial = (req, res) => {
 
 // POST
 
+
 const createTestimonial = async (req, res) => {
   const data = {...req.body}
   try {
@@ -34,6 +35,7 @@ const createTestimonial = async (req, res) => {
     res.status(httpCodes.INTERNAL_SERVER_ERROR).send(error)
   }
 
+
 };
 
 // UPDATE
@@ -44,9 +46,18 @@ const updateTestimonial = async (req, res) => {
   }
   try {
     const testimonalUpdate = await TestimonialService.updateTestimonial(dataUpdate, id)
+
+    if( testimonalUpdate){
     res.status(httpCodes.OK).send({
       msg:testimonalUpdate
     });
+  }
+    else{
+      res.status(httpCodes.RESOURCE_NOT_FOUND).send({
+        msg:'resource  not found'
+      })
+    }
+
   } catch (error) {
     res.status(httpCodes.INTERNAL_SERVER_ERROR).send(error);
   }
@@ -55,6 +66,7 @@ const updateTestimonial = async (req, res) => {
 };
 
 // DELETE
+
 
 const deleteTestimonial = async (req, res) => {
   const {id}= req.params
