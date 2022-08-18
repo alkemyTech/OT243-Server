@@ -41,11 +41,21 @@ const createActivity = async (req, res) => {
 };
 
 // UPDATE
-const updateActivity = (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    message: 'This route is not yet defined!',
-  });
+const updateActivity = async (req, res) => {
+  try {
+    const activityUpdated = await ActivityService.update(req.params, req.body);
+    res.status(CREATED).json({
+      status: 'success',
+      data: {
+        activity: activityUpdated,
+      },
+    });
+  } catch (err) {
+    res.status(INTERNAL_SERVER_ERROR).json({
+      status: 'error',
+      message: err.message,
+    });
+  }
 };
 
 // DELETE
