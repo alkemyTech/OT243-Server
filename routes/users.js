@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const { createUser, loginUser, updateUser, deleteUser, getMyData, } = require('../controllers/userController');
+
+const { createUser, loginUser, updateUser, deleteUser, getMyData, getAllUsers } = require('../controllers/userController');
+
 const { validateJWT } = require('../utils/jasonWebToken');
 const { validateUserLogin, validateUserRegister, validateUserUpdate } = require('../validators/usersValidator');
 

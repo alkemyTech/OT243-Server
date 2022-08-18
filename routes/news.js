@@ -10,8 +10,16 @@ router
   .get(newsController.getAllNews)
   .post(validateCreate, newsController.createNews);
 
+
 router.route('/:id').get(newsController.getNews).put(newsController.updateNews);
 
 router.get("/:id/comments",getCommentByNewId);
+
+router
+  .route('/:id')
+  .get(newsController.getNews)
+  .put(newsController.updateNews)
+  .delete(newsController.deleteNews);
+
 
 module.exports = router;
