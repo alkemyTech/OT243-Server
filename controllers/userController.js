@@ -5,6 +5,7 @@ const WelcomeMailService = require('../services/welcomEmail')
 
 const { generateJWT } = require('../utils/jasonWebToken');
 const { encriptPass, validPass } = require('../utils/encriptPass');
+const { ADMIN } = require('../utils/roles');
 
 // Create User Controller
 const createUser = async (req, res) => {
@@ -183,7 +184,7 @@ const getAllUsers = async (req, res) => {
    const userIsAdmin = userData.dataValues.roleId;
 
    // Check if the User has Admin role
-   if (userIsAdmin !== 1) {
+   if (userIsAdmin !== ADMIN) {
      return res.status(FORBIDDEN).json({
        msg: 'User role is not Admin'
      });
