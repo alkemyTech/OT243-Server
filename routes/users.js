@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
+
 const { createUser, loginUser, updateUser, deleteUser, getMyData, getAllUsers } = require('../controllers/userController');
+
 const { validateJWT } = require('../utils/jasonWebToken');
 const { validateUserLogin, validateUserRegister, validateUserUpdate } = require('../validators/usersValidator');
 
@@ -21,6 +23,7 @@ router.patch('/:id', validateUserUpdate, updateUser);
 router.delete('/:id', deleteUser);
 
 /* GET List of Users - URL: ../users */
-router.get('/users', validateJWT, getAllUsers);
+
+//router.get('/users', validateJWT, getAllUsers);
 
 module.exports = router;
