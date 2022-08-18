@@ -155,27 +155,51 @@ const getMyData = async (req, res) => {
   const userId = req.payloadToken.userData.id;
 
   try {
-    const userData = await UserService.getUser(userId);
-    const userIsAdmin = userData.dataValues.roleId;
+    const { dataValues } = await UserService.getUser(userId); 
 
-    // Check if the User has Admin role
-    if (userIsAdmin !== 1) {
-      return res.status(FORBIDDEN).json({
-        msg: 'User role is not Admin'
-      });
-    }
-
-    const allUsers = await UserService.getAllUsers();
+    const userData = {
+      firstName: dataValues.firstName,
+      lastName: dataValues.lastName,
+      email: dataValues.email
+    };
 
     return res.status(OK).json({
-      data: allUsers  
+      data: userData
     });
   } catch (error) {
     return res.status(INTERNAL_SERVER_ERROR).json({
-      msg: 'Get all users error',
+      msg: 'Get your data error',
       message: error
     });
   }
+};
+
+const getAllUsers = async (req, res) => {
+ // Get user id from payload token
+ const userId = req.payloadToken.userData.id;
+
+ try {
+   const userData = await UserService.getUser(userId);
+   const userIsAdmin = userData.dataValues.roleId;
+
+   // Check if the User has Admin role
+   if (userIsAdmin !== 1) {
+     return res.status(FORBIDDEN).json({
+       msg: 'User role is not Admin'
+     });
+   }
+
+   const allUsers = await UserService.getAllUsers();
+
+   return res.status(OK).json({
+     data: allUsers  
+   });
+ } catch (error) {
+   return res.status(INTERNAL_SERVER_ERROR).json({
+     msg: 'Get all users error',
+     message: error
+   });
+ }
 };
 
 module.exports = {
@@ -183,5 +207,6 @@ module.exports = {
   loginUser,
   updateUser,
   deleteUser,
-  getMyData
+  getMyData,
+  getAllUsers
 };
