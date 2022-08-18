@@ -20,11 +20,20 @@ const getTestimonial = (req, res) => {
 };
 
 // POST
-const createTestimonial = (req, res) => {
-  res.status(201).json({
-    status: 'success',
-    message: 'This route is not yet defined!',
-  });
+
+const createTestimonial = async (req, res) => {
+  const data = {...req.body}
+  try {
+    const testimonialCreated = await TestimonialService.createTestimonial(data)
+    res.status(httpCodes.OK).send({
+      msg: testimonialCreated
+    })
+  
+  } catch (error) {
+
+    res.status(httpCodes.INTERNAL_SERVER_ERROR).send(error)
+  }
+
 };
 
 // UPDATE
@@ -46,6 +55,7 @@ const updateTestimonial = async (req, res) => {
 };
 
 // DELETE
+
 const deleteTestimonial = async (req, res) => {
   const {id}= req.params
   try {
@@ -56,6 +66,7 @@ const deleteTestimonial = async (req, res) => {
   } catch (error) {
     res.status(httpCodes.INTERNAL_SERVER_ERROR).send(error);
   }
+
 };
 
 module.exports = {
